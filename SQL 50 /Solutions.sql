@@ -143,7 +143,6 @@ Output:
 | Algeria     | 37100000   | 2381741 |
 
 SOLUTION - Big Countries */
-
 SELECT name, population, area
 FROM World
 WHERE area >= 3000000 OR population >= 25000000
@@ -195,7 +194,6 @@ Output:
 +------+
 
 SOLUTION - Article Views I */
-
 SELECT DISTINCT author_id AS id
 FROM Views
 WHERE author_id = viewer_id
@@ -471,5 +469,65 @@ SELECT Visits.customer_id, COUNT(Visits.customer_id) AS count_no_trans
 FROM Visits LEFT JOIN Transactions ON Visits.visit_id = Transactions.visit_id
 WHERE Transactions.transaction_id IS NULL
 GROUP BY Visits.customer_id
+
+/* Table: Weather
+
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| recordDate    | date    |
+| temperature   | int     |
++---------------+---------+
+id is the column with unique values for this table.
+There are no different rows with the same recordDate.
+This table contains information about the temperature on a certain day.
+ 
+
+Write a solution to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Weather table:
++----+------------+-------------+
+| id | recordDate | temperature |
++----+------------+-------------+
+| 1  | 2015-01-01 | 10          |
+| 2  | 2015-01-02 | 25          |
+| 3  | 2015-01-03 | 20          |
+| 4  | 2015-01-04 | 30          |
++----+------------+-------------+
+Output: 
++----+
+| id |
++----+
+| 2  |
+| 4  |
++----+
+Explanation: 
+In 2015-01-02, the temperature was higher than the previous day (10 -> 25).
+In 2015-01-04, the temperature was higher than the previous day (20 -> 30).
+
+197. Rising Temperature */
+-- MYSQL
+SELECT W1.id
+FROM Weather W1 
+ JOIN Weather W2 ON DATEDIFF(W1.recordDate, W2.recordDate) = 1
+ AND W1.temperature > W2.temperature
+
+-- MYSQL Server
+SELECT w2.id AS Id
+FROM Weather w1
+JOIN Weather w2 ON DATEDIFF(day, w1.recordDate, w2.recordDate) = 1
+AND w2.temperature > w1.temperature
+
+
 
 
